@@ -1,0 +1,207 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+
+
+<!--
+
+`toggle-icon` provides a ON/OFF switch that user can toggle the state
+by tapping the icon.
+Example:
+     <toggle-icon icon="thumb-up" checked animation="flip-vertical"></toggle-icon>
+
+### Styling
+The following custom properties and mixins are available for styling:
+Custom property | Description | Default
+----------------|-------------|----------
+`--toggle-icon` | Color and size of icon
+`--toggle-icon-active` | Color and size of icon when active.
+-->
+
+
+<dom-module id="toggle-icon">
+  <template>
+    <style>
+
+
+       :host {
+        display: inline-block;
+        position: relative;
+        transition: all .3s;
+        @apply --toggle-icon;
+      }
+
+      :host([checked]) {
+        @apply --toggle-icon-active;
+      };
+
+      :host([checked]){
+        -webkit-transform: var(--transform-icon);
+        transform: var(--transform-icon);
+      }
+
+
+    </style>
+
+    <!--[[transform]]
+    CHECKED[[checked]]-->
+    
+    <paper-icon-button 
+      icon="[[showIcon]]" on-tap="toggle">
+    </paper-icon-button>
+    
+  </template>
+
+  <script>
+    /**
+     * `toggle-icon`
+     * polymer 2
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+
+    class ToggleIcon extends Polymer.Element {
+      static get is() { return 'toggle-icon'; }
+      static get properties() {
+        return {
+
+          /**
+             * Animates icon when active state changes limited to 'flip-horizontal', 'flip-vertical', and 'rotate'
+             *
+             * @attribute animation
+             * @type String
+             * @default false
+             */
+
+          animation: {
+            type: String,
+          },
+
+          /**
+             * Checked
+             *
+             * @attribute checked
+             * @type Boolean
+             * @default false
+             */
+
+          checked:{
+            type: Boolean,
+            value:false,
+            notify:true,
+            reflectToAttribute: true,
+          },
+
+          /**
+             * Icon used in inactive state (unchecked)
+             *
+             * @attribute icon
+             * @type String
+             */
+
+          icon:{
+            type: String,
+          },
+
+          /**
+             * Used when icon is active (checked)
+             *
+             * @attribute iconActive
+             * @type Boolean
+             * @default false
+             */
+
+          iconActive:{
+            type: String
+          },
+
+          /**
+             * Rotates the icon clockwise, must use 'rotate' in animation
+             *
+             * @attribute checked
+             * @type Boolean
+             * @default false
+             */
+
+          rotation: {
+            type: Number,
+            value: 180,
+          },
+
+          showIcon:{
+            type:String
+            
+          },
+
+          transform:{
+            type:String,
+            reflectToAttribute: true
+          },
+
+        };
+      }
+
+      static get observers() {
+        return [
+          // Observer method name, followed by a list of dependencies, in parenthesis
+          '_watchIcon(icon, iconActive, checked)',
+          '_watchChecked(checked)'
+         
+        ]
+      }
+
+      _watchIcon(icon, iconActive, checked){
+        if(!checked){
+          this.showIcon = icon;
+        }else{
+          if(iconActive){ 
+            this.showIcon = iconActive;
+          }else{
+            this.showIcon = icon;
+          }
+        }
+      }
+
+      /**
+         * Toggles active (checked) state.
+         */
+  
+      toggle(){
+        this.checked = !this.checked;
+      }
+
+      _watchChecked(checked){
+        
+        if(checked){
+          this.updateStyles({
+            '--transform-icon': this._computeTransform(),
+          });
+        }
+        
+      }
+
+
+      _computeTransform () {
+        if (this.animation === undefined || this.animation == null) {
+          return '';
+        }
+        var transform = '';
+        if (this.animation.indexOf('flip-vertical') > -1) {
+          transform += ' scale(1, -1)';
+        }
+        if (this.animation.indexOf('flip-horizontal') > -1) {
+          transform += ' scale(-1, 1)';
+        }
+        if (this.animation.indexOf('rotate') > -1) {
+          transform += ' rotate(' + this.rotation + 'deg)';
+        }
+        return transform;
+      }
+    }
+
+
+    window.customElements.define(ToggleIcon.is, ToggleIcon);
+  </script>
+</dom-module>

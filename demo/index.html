@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>toggle-icon demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../toggle-icon.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+       .green-red {
+        --toggle-icon: {
+          color: var(--paper-green-500);
+        };
+        --toggle-icon-active: {
+          color: var(--paper-red-500);
+        };
+      }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Toggle with color change </h3>
+      <demo-snippet>
+        <template>
+          <style>
+            .green-red {
+              --toggle-icon: {
+                color: var(--paper-green-500);
+              };
+              --toggle-icon-active: {
+                color: var(--paper-red-500);
+              };
+            }
+          </style>
+
+          <toggle-icon class="green-red" icon="icons:menu"></toggle-icon>      
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>Flip icon, checked = true</h3>
+      <demo-snippet>
+        <template>
+          <toggle-icon icon="thumb-up" checked animation="flip-vertical"></toggle-icon>
+      
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>Rotate icon</h3>
+      <demo-snippet>
+        <template>
+          <toggle-icon icon="thumb-up" animation="rotate" rotation="90" checked="{{iconChecked}}"></toggle-icon>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
