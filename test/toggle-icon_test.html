@@ -4,48 +4,51 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>toggle-icon test</title>
+    <title>toggle-icon basic tests</title>
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
 
     <link rel="import" href="../toggle-icon.html">
   </head>
   <body>
 
-    <test-fixture id="BasicTestFixture"> 
-      <template>
-        <toggle-icon icon="icons:menu" checked></toggle-icon>
-      </template>
-    </test-fixture>
+    <test-fixture id="Basic">
+    <template>
+      <toggle-icon icon="icons:menu"></toggle-icon>
+    </template>
+  </test-fixture>
 
-    <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <toggle-icon prop1="new-prop1"></toggle-icon>
-      </template>
-    </test-fixture>
+    
 
     <script>
-      suite('toggle-icon', function() {
 
-        test('instantiating the element with default properties works', function() {
-          var element = fixture('BasicTestFixture');
-          assert.equal(element.checked, true);
-          var elementShadowRoot = element.shadowRoot;
-          // var elementHeader = elementShadowRoot.querySelector('h2');
-          // assert.equal(elementHeader.innerHTML, 'Hello toggle-icon!');
-        });
-
-        test('setting a property on the element works', function() {
-          // Create a test fixture
-          var element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
-        });
-
+      suite('defaults', function() {
+      var c1;
+      setup(function() {
+        c1 = fixture('Basic');
       });
+
+      test('check toggle via click', function(done) {
+        c1.addEventListener('click', function() {
+          assert.isTrue(c1.getAttribute('checked') == true)
+          done();
+        });
+        MockInteractions.tap(c1);
+      });
+
+      test('check check equals active on click', function(done) {
+        c1.addEventListener('click', function() {
+          assert.isTrue(c1.getAttribute('checked') == c1.getAttribute('active'));
+          done();
+        });
+        MockInteractions.tap(c1);
+      });
+
+      })
+    
+     
     </script>
 
   </body>
