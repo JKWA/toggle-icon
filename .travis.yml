@@ -5,15 +5,14 @@ node_js:
 - '6.0'
 
 addons:
-  firefox: 46.0
-  sauce_connect: true
+  firefox: latest
   apt:
     sources:
     - google-chrome
     packages:
     - google-chrome-stable
-before_script:
 
+before_script:
 - npm install web-component-tester
 - npm install -g bower
 - bower install
