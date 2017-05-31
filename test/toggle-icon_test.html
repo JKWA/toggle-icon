@@ -13,9 +13,9 @@
   </head>
   <body>
 
-    <test-fixture id="BasicTestFixture">
+    <test-fixture id="BasicTestFixture"> 
       <template>
-        <toggle-icon></toggle-icon>
+        <toggle-icon icon="icons:menu" checked></toggle-icon>
       </template>
     </test-fixture>
 
@@ -30,10 +30,10 @@
 
         test('instantiating the element with default properties works', function() {
           var element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'toggle-icon');
+          assert.equal(element.checked, true);
           var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello toggle-icon!');
+          // var elementHeader = elementShadowRoot.querySelector('h2');
+          // assert.equal(elementHeader.innerHTML, 'Hello toggle-icon!');
         });
 
         test('setting a property on the element works', function() {

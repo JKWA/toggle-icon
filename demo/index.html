@@ -16,10 +16,10 @@
       <style is="custom-style" include="demo-pages-shared-styles">
        .green-red {
         --toggle-icon: {
-          color: var(--paper-green-500);
+          color: green;
         };
         --toggle-icon-active: {
-          color: var(--paper-red-500);
+          color: red;
         };
       }
       </style>
@@ -33,10 +33,10 @@
           <style>
             .green-red {
               --toggle-icon: {
-                color: var(--paper-green-500);
+                color: green;
               };
               --toggle-icon-active: {
-                color: var(--paper-red-500);
+                color: red;
               };
             }
           </style>
@@ -49,7 +49,9 @@
       <h3>Flip icon, checked = true</h3>
       <demo-snippet>
         <template>
-          <toggle-icon icon="thumb-up" checked animation="flip-vertical"></toggle-icon>
+          <toggle-icon icon="thumb-up" checked animation="flip-vertical">
+            TESTING
+          </toggle-icon>
       
         </template>
       </demo-snippet>
