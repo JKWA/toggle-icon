@@ -36,9 +36,13 @@ Custom property | Description | Default
         @apply --toggle-icon-active;
       };
 
-      :host([checked]){
+      :host([checked]) {
         -webkit-transform: var(--transform-icon);
         transform: var(--transform-icon);
+      }
+
+      :host([disabled]) {
+        opacity: 0.5;
       }
 
 
@@ -48,7 +52,7 @@ Custom property | Description | Default
     <paper-icon-button 
       icon="[[showIcon]]" noink on-tap="toggle">
     </paper-icon-button>
-   
+    
     
   </template>
 
@@ -64,6 +68,8 @@ Custom property | Description | Default
 
     class ToggleIcon extends Polymer.Element {
       static get is() { return 'toggle-icon'; }
+
+    
       static get properties() {
         return {
 
@@ -105,6 +111,19 @@ Custom property | Description | Default
             type: Boolean,
             value:false,
             notify:true,
+            reflectToAttribute: true,
+          },
+
+          /**
+             * Disable state change (unchecked)
+             *
+             * @attribute icon
+             * @type String
+             */
+
+          disabled:{
+            type: Boolean,
+            value: false,
             reflectToAttribute: true,
           },
 
@@ -183,7 +202,9 @@ Custom property | Description | Default
          */
   
       toggle(){
-        this.checked = !this.checked;
+        if(!this.disabled){
+          this.checked = !this.checked;
+        }
       }
 
       _watchChecked(checked){
