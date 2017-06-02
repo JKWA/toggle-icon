@@ -29,6 +29,7 @@
       setup(function() {
         button = fixture('TrivialButton');
       });
+
       test('can be checked imperatively', function(done) {
         button.checked = true;
         expect(button.hasAttribute('checked')).to.be.eql(true);
@@ -41,52 +42,53 @@
           }
         }, 1);
       });
-      test('can be unchecked after being checked imperatively', function(done) {
+
+      test('can be unchecked imperatively', function(done) {
         button.checked = true;
         expect(button.hasAttribute('checked')).to.be.eql(true);
         Polymer.Base.async(function() {
           expect(button.checked).to.be.eql(true);
           button.checked = false;
-          button.active = false;
           expect(button.hasAttribute('checked')).to.be.eql(false);
           Polymer.Base.async(function() {
             expect(button.checked).to.be.eql(false);
-            expect(button.active).to.be.eql(false);
             done();
           }, 1);
         }, 1);
       });
 
-      test('can be triggered with space', function(done) {
-        button.addEventListener('keydown', function() {
-          done();
-        });
-        MockInteractions.pressSpace(button);
+      test('has aria role "checkbox"', function() {
+        expect(button.role).to.be.equal('checkbox');
+        
       });
 
-      test('can be triggered with enter', function(done) {
-        button.addEventListener('keydown', function() {
-
-          done();
-        });
-        MockInteractions.pressEnter(button);
+      test('can be disabled imperatively', function() {
+        button.disabled = true;        
+        expect(button.disabled).to.be.eql(true);
 
       });
 
+      test('clicking toggles state', function() {
+        button.checked = true;
+        button.shadowRoot.querySelector('paper-icon-button').click();
+        assert.equal(button.checked, false);
 
+        button.shadowRoot.querySelector('paper-icon-button').click();
+        assert.equal(button.checked, true);
+       
+      });
 
-      // test('disable button does not change state when clicked', function(done) {
-      //   // button.disabled = true;
-      //   button.addEventListener('click', function() {
-      //     done();
-      //   });
+       test('disabling stops clicking from toggling state', function() {
+        button.checked = true;
+        button.disabled = true;
+        button.shadowRoot.querySelector('paper-icon-button').click();
+        assert.equal(button.checked, true);
 
-      //   MockInteractions.tap(button);
-      //   expect(startBtn.hasAttribute('checked')).to.be.equal(true);
-
-      //   MockInteractions.tap(button);
-      //   expect(startBtn.hasAttribute('checked')).to.be.equal(false);
-      // });
+        button.disabled = false;
+        button.shadowRoot.querySelector('paper-icon-button').click();
+        assert.equal(button.checked, false);
+       
+      });
 
     })
     

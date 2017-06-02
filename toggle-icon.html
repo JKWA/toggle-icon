@@ -3,29 +3,11 @@
 <link rel="import" href="../iron-icons/iron-icons.html">
 
 
-
-<!--
-
-`toggle-icon` provides a ON/OFF switch that user can toggle the state
-by tapping the icon.
-Example:
-     <toggle-icon icon="thumb-up" checked animation="flip-vertical"></toggle-icon>
-
-### Styling
-The following custom properties and mixins are available for styling:
-Custom property | Description | Default
-----------------|-------------|----------
-`--toggle-icon` | Color size of icon
-`--toggle-icon-active` | Color of icon when active.
--->
-
-
 <dom-module id="toggle-icon">
   <template>
     <style>
 
-
-       :host {
+      :host {
         display: inline-block;
         position: relative;
         transition: all .3s;
@@ -50,7 +32,7 @@ Custom property | Description | Default
 
     
     <paper-icon-button 
-      icon="[[showIcon]]" noink on-tap="toggle">
+      id="toggle" icon="[[_showIcon]]" role="checkbox" noink on-tap="toggle">
     </paper-icon-button>
     
     
@@ -84,6 +66,7 @@ Custom property | Description | Default
           active: {
             type: Boolean,
             value: false,
+            readOnly: true,
             notify: true
           },
 
@@ -120,6 +103,9 @@ Custom property | Description | Default
              * @attribute icon
              * @type String
              */
+          // ariaDisabled:{
+          //   type:String
+          // },
 
           disabled:{
             type: Boolean,
@@ -135,7 +121,7 @@ Custom property | Description | Default
              */
 
           icon:{
-            type: String,
+            type: String
           },
 
           /**
@@ -148,6 +134,12 @@ Custom property | Description | Default
 
           iconActive:{
             type: String
+          },
+
+          role:{
+            type:String,
+            value:'checkbox',
+            readOnly: true
           },
 
           /**
@@ -163,36 +155,28 @@ Custom property | Description | Default
             value: 180,
           },
 
-          showIcon:{
+          _showIcon:{
             type:String
-            
-          },
-
-          transform:{
-            type:String,
-            reflectToAttribute: true
-          },
+          }
 
         };
       }
 
       static get observers() {
         return [
-          // Observer method name, followed by a list of dependencies, in parenthesis
           '_watchIcon(icon, iconActive, checked)',
           '_watchChecked(checked)'
-         
         ]
       }
 
       _watchIcon(icon, iconActive, checked){
         if(!checked){
-          this.showIcon = icon;
+          this._showIcon = icon;
         }else{
           if(iconActive){ 
-            this.showIcon = iconActive;
+            this._showIcon = iconActive;
           }else{
-            this.showIcon = icon;
+            this._showIcon = icon;
           }
         }
       }
@@ -201,9 +185,11 @@ Custom property | Description | Default
          * Toggles active (checked) state.
          */
   
-      toggle(){
+      toggle(event){
         if(!this.disabled){
           this.checked = !this.checked;
+        }else{
+          this.$.toggle.setAttribute('aria-disabled', true);
         }
       }
 
@@ -211,12 +197,13 @@ Custom property | Description | Default
         
         if(checked){
           this.updateStyles({
-            '--transform-icon': this._computeTransform(),
+            '--transform-icon': this._computeTransform()
           });
+
           
         }
-        // this.active = checked;
-        
+        this.$.toggle.setAttribute('aria-checked', checked);
+        this.active = checked;
       }
 
 
